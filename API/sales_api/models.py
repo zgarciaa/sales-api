@@ -25,7 +25,7 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
-    
+       
 class Sale(models.Model):
     id = models.UUIDField(primary_key=True) # UUID
     products_id = models.ForeignKey(to=Product, on_delete=models.CASCADE)

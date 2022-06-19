@@ -1,16 +1,17 @@
+from gc import get_objects
 from rest_framework.permissions import AllowAny, BasePermission
 from django.shortcuts import get_object_or_404
 from .models import User, Product, Sale, Role
-from rest_framework import viewsets
+from rest_framework import viewsets, views, generics
 from rest_framework.response import Response
-from .serializers import UserSerializer, ProductSerializer, RoleSerializer
+from .serializers import UserSerializer, ProductSerializer, RoleSerializer, SaleSerializer
 
-class UserViewSet(viewsets.ViewSet):
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
     
-    def list(self, request):
-        queryset = User.objects.all()
-        serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+            users = User.objects.all()
+            return users
 
     def retrieve(self, request, pk=None):
         queryset = User.objects.all()
@@ -26,6 +27,7 @@ class UserViewSet(viewsets.ViewSet):
         last_name = user_data['last_name']
         roles_id = Role(user_data['roles_id'])
 
+
         #Create new User
         new_user = User.objects.create(id=id, document=document, name=name, 
                                        last_name=last_name, roles_id=roles_id)
@@ -34,12 +36,12 @@ class UserViewSet(viewsets.ViewSet):
         serializer = UserSerializer(new_user)
         return Response(serializer.data)
         
-class ProductViewSet(viewsets.ViewSet):
+class ProductViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductSerializer
     
-    def list(self, request):
-        queryset = Product.objects.all()
-        serializer = ProductSerializer(queryset, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        products = Product.objects.all()
+        return products
 
     def retrieve(self, request, pk=None):
         queryset = Product.objects.all()
@@ -61,12 +63,12 @@ class ProductViewSet(viewsets.ViewSet):
         serializer = ProductSerializer(new_product)
         return Response(serializer.data)
 
-class RoleViewSet(viewsets.ViewSet):
-
-    def list(self, request):
-        queryset = Role.objects.all()
-        serializer = RoleSerializer(queryset, many=True)
-        return Response(serializer.data)
+class RoleViewSet(viewsets.ModelViewSet):
+    serializer_class = RoleSerializer
+    
+    def get_queryset(self):
+        roles = Role.objects.all()
+        return roles
 
     def retrieve(self, request, pk=None):
         queryset = Role.objects.all()
@@ -86,8 +88,15 @@ class RoleViewSet(viewsets.ViewSet):
         serializer = RoleSerializer(new_role)
         return Response(serializer.data)
     
-    def destroy(self, request, pk=None):
-        queryset = Role.objects.all()
-        role = get_object_or_404(queryset, pk=pk)
+    def destroy(self, request, *args, **kwargs):
+        role = self.get_object()
         role.delete()
-        return Response({'message': 'Role was deleted succesfully'}) 
+        return Response({'message': 'Role was deleted succesfully'})
+    
+class SaleViewSet(viewsets.ModelViewSet):
+    
+        serializer_class = SaleSerializer
+        
+        def get_queryset(self):
+            sales = Sale.objects.all()
+            return sales
