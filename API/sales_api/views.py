@@ -1,10 +1,15 @@
 from django.shortcuts import get_object_or_404
 from .models import User, Product, Sale, Role
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializers import *
 from datetime import datetime
 from uuid import uuid4
+
+ID_ROLES = {
+    'admin': '796cd220-3b4f-4b90-9bd6-0fa695979ddf',
+    'employee': '5935287c-a160-4c1e-bbfa-4169b943f4e8'
+}
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
@@ -12,9 +17,14 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
             users = User.objects.all()
             return users
-        
+                   
     #Get an user
     def retrieve(self, request, pk=None):
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if hdrs != ID_ROLES['admin']:
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+        
         queryset = User.objects.all()
         user = get_object_or_404(queryset, pk=pk)
         serializer = UserSerializer(user)
@@ -22,24 +32,34 @@ class UserViewSet(viewsets.ModelViewSet):
     
     #Create new user
     def create(self, request, *args, **kwargs):
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if hdrs != ID_ROLES['admin']:
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+        
         user_data = request.data
-        id = uuid4()
+        id = user_data['id']
         document = user_data['document']
         name = user_data['name']
         last_name = user_data['last_name']
-        roles_id = Role(user_data['roles_id'])
+        role = user_data['roles_id']
+        roles_id = Role(role)
         
         new_user = User.objects.create(id=id, document=document, name=name, 
                                        last_name=last_name, roles_id=roles_id)
         new_user.save()
-        serializer = UserSerializer(new_user)
-        return Response(serializer.data)
+        return Response('User created succesfully', status.HTTP_201_CREATED)
         
     #Delete user   
     def destroy(self, request, *args, **kwargs):
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if hdrs != ID_ROLES['admin']:
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+        
         user = self.get_object()
         user.delete()
-        return Response({'message': 'User has been deleted succesfully'})
+        return Response('User deleted succesfully', status.HTTP_200_OK)
    
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
@@ -51,6 +71,11 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     #Get a product 
     def retrieve(self, request, pk=None):
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if hdrs != ID_ROLES['admin'] and hdrs != ID_ROLES['employee']:
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+        
         queryset = Product.objects.all()
         product = get_object_or_404(queryset, pk=pk)
         serializer = ProductSerializer(product)
@@ -58,16 +83,20 @@ class ProductViewSet(viewsets.ModelViewSet):
     
     #Create new product
     def create(self, request, *args, **kwargs):
-        role_data = request.data
-        id = uuid4()
-        name = role_data['name']
-        description = role_data['description']
-        price = int(role_data['price'])
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if hdrs != ID_ROLES['admin']:
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+        
+        product_data = request.data
+        id = product_data['id']
+        name = product_data['name']
+        description = product_data['description']
+        price = int(product_data['price'])
         
         new_product = Product.objects.create(id=id, name=name, description=description, price=price)
         new_product.save()
-        serializer = ProductSerializer(new_product)
-        return Response(serializer.data)
+        return Response('Product created succesfully', status.HTTP_201_CREATED)
 
 class RoleViewSet(viewsets.ModelViewSet):
     serializer_class = RoleSerializer
@@ -79,6 +108,10 @@ class RoleViewSet(viewsets.ModelViewSet):
 
     #Get role by id
     def retrieve(self, request, pk=None):
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if hdrs != ID_ROLES['admin']:
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         queryset = Role.objects.all()
         role = get_object_or_404(queryset, pk=pk)
         serializer = RoleSerializer(role)
@@ -86,31 +119,50 @@ class RoleViewSet(viewsets.ModelViewSet):
 
     #Create new role
     def create(self, request, *args, **kwargs):
-        role_data = request.data
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if hdrs != ID_ROLES['admin']:
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+        product_data = request.data
         id = uuid4()
-        name = role_data['name']
-        
+        name = product_data['name']
         new_role = Role.objects.create(id=id, name=name)
         new_role.save()
-        serializer = RoleSerializer(new_role)
-        return Response(serializer.data)
+        return Response('Role created succesfully', status.HTTP_201_CREATED)
     
     #Delete a role
     def destroy(self, request, *args, **kwargs):
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if hdrs != ID_ROLES['admin']:
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         role = self.get_object()
         role.delete()
-        return Response({'message': 'Role has been deleted succesfully'})
+        return Response('Role deleted succesfully', status.HTTP_200_OK)
     
 class SaleViewSet(viewsets.ModelViewSet):
         serializer_class = SaleSerializer
         
-        #List all sales
         def get_queryset(self):
-            sales = Sale.objects.all()
+            sales = Sale.objects.order_by('-sale_at')
             return sales
+        
+        def retrieve(self, request, *args, **kwargs):
+            hdrs = request.headers.get('Auth')
+            #Check if user is authorized
+            if (hdrs != ID_ROLES['admin'] and hdrs != ID_ROLES['employee']):
+                return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+            sales = self.get_object()
+            serializers = self.get_serializer(sales)
+            return Response(serializers.data)
         
         #Create new sale
         def create(self, request, *args, **kwargs):
+            hdrs = request.headers.get('Auth')
+            #Check if user is authorized
+            if (hdrs != ID_ROLES['admin'] and hdrs != ID_ROLES['employee']):
+                return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+            
             now = datetime.now()
             dt_str = now.strftime("%Y-%m-%d %H:%M:%S")
             sale_data = request.data
@@ -123,15 +175,31 @@ class SaleViewSet(viewsets.ModelViewSet):
             new_sale = Sale.objects.create(id=id, products_id=product_id, qty=qty,
                                            sale_at=sale_at, users_id=user_id)
             new_sale.save()
-            serializer = SaleSerializer(new_sale)
-            return Response(serializer.data)
+            return Response('Sale created succesfully', status=status.HTTP_201_CREATED)
            
+        #Update a sale
         def update(self, request, *args, **kwargs):
-            pass
+            hdrs = request.headers.get('Auth')
+            #Check if user is authorized
+            if hdrs != ID_ROLES['admin']:
+                return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response('Sale updated succesfully', status=status.HTTP_200_OK)
         
         #Delete a sale
         def destroy(self, request, *args, **kwargs):
+            hdrs = request.headers.get('Auth')
+            #Check if user is authorized
+            if hdrs != ID_ROLES['admin']:
+                return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+            
             sale = self.get_object()
             sale.delete()
-            return Response({'message': 'Sale has been deleted succesfully'})
+            return Response('Sale deleted succesfully', status=status.HTTP_200_OK)
         
+class SalesOfDayViewSet(viewsets.ModelViewSet):
+    pass
