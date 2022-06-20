@@ -1,0 +1,13 @@
+CREATE TABLE public.sales_api_products
+(
+    id uuid NOT NULL,
+    name character varying(30) NOT NULL,
+    description character varying(30) NOT NULL,
+    price integer NOT NULL,
+    CONSTRAINT sales_api_product_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.sales_api_products
+    OWNER to postgres;
