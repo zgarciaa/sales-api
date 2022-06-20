@@ -1,7 +1,5 @@
-from atexit import register
 from django.urls import include, path
 from rest_framework import routers
-from sales_api.models import Sale
 from sales_api.views import ProductViewSet, RoleViewSet, UserViewSet, SaleViewSet
 
 router = routers.DefaultRouter()

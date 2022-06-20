@@ -34,5 +34,5 @@ class Sale(models.Model):
     users_id = models.ForeignKey(to=User, on_delete=models.CASCADE) # UUID
     
     def __str__(self):
-        return str(self.products_id)
+        return self.product_id
 
