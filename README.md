@@ -1,4 +1,4 @@
-# Sales API
+# Store API
 Currently it has the following functionalities:
 - Manage sales
 - Manage products
