@@ -1,4 +1,4 @@
-# Sales-api
+# Sales API
 Currently it has the following functionalities:
 - Manage sales
 - Manage products
