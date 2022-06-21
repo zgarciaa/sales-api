@@ -7,29 +7,34 @@ This store API provides the following functionality:
 - Make daily closings
 - Make a monthly balance
 
+# Inside API folder
 
-# Create a virtual environment
+- cd API
+
+## Create a virtual environment
 
 - python -m venv env
 
 - env\Scripts\activate
 
 
-# Install the requirements
+## Install the requierements
 
 - pip install -r requirements.txt
 
 
-# Create database migration
+## Create database migration
 
 - python manage.py makemigrations
 
 
-# Applying migrations
+## Applying migrations
 
 - python manage.py migrate
 
 
-# Run the project
+## Run the project
 
 - python manage.py runserver
+
+- Go to http://localhost:8000/
