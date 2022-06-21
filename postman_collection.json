@@ -1,0 +1,742 @@
+{
+	"info": {
+		"_postman_id": "70e60fee-02fb-4286-8ee5-30b5c9fc45c3",
+		"name": "store-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "List all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List an user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/e4bd4bec-2a37-4fc3-ad4a-121be581d4f9/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"e4bd4bec-2a37-4fc3-ad4a-121be581d4f9",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1374c539-2839-3d72-bf88-d81b73280330",
+									"type": "default"
+								},
+								{
+									"key": "document",
+									"value": "1222222331",
+									"type": "default"
+								},
+								{
+									"key": "name",
+									"value": "Camilo",
+									"type": "default"
+								},
+								{
+									"key": "last_name",
+									"value": "Vargas",
+									"type": "default"
+								},
+								{
+									"key": "roles_id",
+									"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/users/1374c539-2839-3d72-bf88-d81b73280330/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"1374c539-2839-3d72-bf88-d81b73280330",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "List products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							},
+							{
+								"key": "Auth",
+								"value": "5935287c-a160-4c1e-bbfa-4169b943f4e8",
+								"description": "header with employee uuid",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List an product",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							},
+							{
+								"key": "Auth",
+								"value": "5935287c-a160-4c1e-bbfa-4169b943f4e8",
+								"description": "header with employee uuid",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/products/479fba0a-baaf-4b46-95a2-83a663817646/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"products",
+								"479fba0a-baaf-4b46-95a2-83a663817646",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "e98510fb-76b5-4ab8-bd39-7476bb085f1d",
+									"description": "product UUID",
+									"type": "default"
+								},
+								{
+									"key": "name",
+									"value": "Crema dental",
+									"description": "product name",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "3x2",
+									"description": "product description",
+									"type": "default"
+								},
+								{
+									"key": "price",
+									"value": "1500",
+									"description": "product price",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sales",
+			"item": [
+				{
+					"name": "List all sales",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							},
+							{
+								"key": "Auth",
+								"value": "5935287c-a160-4c1e-bbfa-4169b943f4e8",
+								"description": "header with employee uuid",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/sales/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sales",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List an sale",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							},
+							{
+								"key": "Auth",
+								"value": "5935287c-a160-4c1e-bbfa-4169b943f4e8",
+								"description": "header with employee uuid",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/sales/c958af61-66c8-497c-a7f3-46ab99cddc82/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sales",
+								"c958af61-66c8-497c-a7f3-46ab99cddc82",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create sale",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							},
+							{
+								"key": "Auth",
+								"value": "5935287c-a160-4c1e-bbfa-4169b943f4e8",
+								"description": "header with employee uuid",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "products_id",
+									"value": "efbff7f6-6374-4c2f-9c96-3611c65068ba",
+									"description": "product UUID",
+									"type": "default"
+								},
+								{
+									"key": "qty",
+									"value": "2",
+									"description": "product quantity",
+									"type": "default"
+								},
+								{
+									"key": "users_id",
+									"value": "e4bd4bec-2a37-4fc3-ad4a-121be581d4f9",
+									"description": "user UUID",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/sales/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sales",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update sale",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "products_id",
+									"value": "efbff7f6-6374-4c2f-9c96-3611c65068ba",
+									"description": "change product id",
+									"type": "default"
+								},
+								{
+									"key": "qty",
+									"value": "11",
+									"description": "change quantity",
+									"type": "default"
+								},
+								{
+									"key": "users_id",
+									"value": "6a2ac595-7a28-4353-94a0-1a77f6bf00e0",
+									"description": "change user",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/sales/c958af61-66c8-497c-a7f3-46ab99cddc82/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sales",
+								"c958af61-66c8-497c-a7f3-46ab99cddc82",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete sale",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/sales/c958af61-66c8-497c-a7f3-46ab99cddc82/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"sales",
+								"c958af61-66c8-497c-a7f3-46ab99cddc82",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "roles",
+			"item": [
+				{
+					"name": "List roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/roles/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"roles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List an role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/roles/796cd220-3b4f-4b90-9bd6-0fa695979ddf/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"roles",
+								"796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "03f80f73-11f4-45f4-9311-b056580c13a8",
+									"description": "role uuid",
+									"type": "default"
+								},
+								{
+									"key": "name",
+									"value": "seller",
+									"description": "role name",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/roles/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"roles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete role",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header admin uuid",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/roles/62d556e4-9a45-48d5-a541-3b0b897e2b58/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"roles",
+								"62d556e4-9a45-48d5-a541-3b0b897e2b58",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sales_report",
+			"item": [
+				{
+					"name": "Sales report per day",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "report",
+									"value": "day",
+									"description": "report per day",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/sales_report/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sales_report",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sales report per month",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "796cd220-3b4f-4b90-9bd6-0fa695979ddf",
+								"description": "header with admin uuid",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "report",
+									"value": "month",
+									"description": "report per month",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/sales_report/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sales_report",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API root",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
