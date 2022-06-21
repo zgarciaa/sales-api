@@ -20,6 +20,3 @@ class SaleSerializer(serializers.ModelSerializer):
     class Meta:
         model=Sale
         fields=('id', 'products_id', 'qty', 'sale_at', 'users_id')
-        
-
-        

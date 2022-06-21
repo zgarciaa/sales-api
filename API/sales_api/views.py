@@ -6,10 +6,13 @@ from .serializers import *
 from datetime import datetime
 from uuid import uuid4
 
-ID_ROLES = {
-    'admin': '796cd220-3b4f-4b90-9bd6-0fa695979ddf',
-    'employee': '5935287c-a160-4c1e-bbfa-4169b943f4e8'
-}
+roles = Role.objects.filter(name='admin')
+for role in roles:
+    admin_id = str(role.id)
+
+roles = Role.objects.filter(name='employee')
+for role in roles:
+    employee_id = str(role.id)
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
@@ -22,7 +25,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         hdrs = request.headers.get('Auth')
         #Check if user is authorized
-        if hdrs != ID_ROLES['admin']:
+        if hdrs != admin_id:
             return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         
         queryset = User.objects.all()
@@ -34,7 +37,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         hdrs = request.headers.get('Auth')
         #Check if user is authorized
-        if hdrs != ID_ROLES['admin']:
+        if hdrs != admin_id:
             return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         
         user_data = request.data
@@ -54,7 +57,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         hdrs = request.headers.get('Auth')
         #Check if user is authorized
-        if hdrs != ID_ROLES['admin']:
+        if hdrs != admin_id:
             return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         
         user = self.get_object()
@@ -73,7 +76,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         hdrs = request.headers.get('Auth')
         #Check if user is authorized
-        if hdrs != ID_ROLES['admin'] and hdrs != ID_ROLES['employee']:
+        if hdrs != admin_id and hdrs != employee_id:
             return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         
         queryset = Product.objects.all()
@@ -85,7 +88,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         hdrs = request.headers.get('Auth')
         #Check if user is authorized
-        if hdrs != ID_ROLES['admin']:
+        if hdrs != admin_id:
             return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         
         product_data = request.data
@@ -110,7 +113,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         hdrs = request.headers.get('Auth')
         #Check if user is authorized
-        if hdrs != ID_ROLES['admin']:
+        if hdrs != admin_id:
             return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         queryset = Role.objects.all()
         role = get_object_or_404(queryset, pk=pk)
@@ -121,7 +124,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         hdrs = request.headers.get('Auth')
         #Check if user is authorized
-        if hdrs != ID_ROLES['admin']:
+        if hdrs != admin_id:
             return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         product_data = request.data
         id = uuid4()
@@ -134,7 +137,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         hdrs = request.headers.get('Auth')
         #Check if user is authorized
-        if hdrs != ID_ROLES['admin']:
+        if hdrs != admin_id:
             return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
         role = self.get_object()
         role.delete()
@@ -150,7 +153,7 @@ class SaleViewSet(viewsets.ModelViewSet):
         def retrieve(self, request, *args, **kwargs):
             hdrs = request.headers.get('Auth')
             #Check if user is authorized
-            if (hdrs != ID_ROLES['admin'] and hdrs != ID_ROLES['employee']):
+            if (hdrs != admin_id and hdrs != employee_id):
                 return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
             sales = self.get_object()
             serializers = self.get_serializer(sales)
@@ -160,7 +163,7 @@ class SaleViewSet(viewsets.ModelViewSet):
         def create(self, request, *args, **kwargs):
             hdrs = request.headers.get('Auth')
             #Check if user is authorized
-            if (hdrs != ID_ROLES['admin'] and hdrs != ID_ROLES['employee']):
+            if (hdrs != admin_id and hdrs != employee_id):
                 return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
             
             now = datetime.now()
@@ -181,7 +184,7 @@ class SaleViewSet(viewsets.ModelViewSet):
         def update(self, request, *args, **kwargs):
             hdrs = request.headers.get('Auth')
             #Check if user is authorized
-            if hdrs != ID_ROLES['admin']:
+            if hdrs != admin_id:
                 return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
@@ -194,12 +197,41 @@ class SaleViewSet(viewsets.ModelViewSet):
         def destroy(self, request, *args, **kwargs):
             hdrs = request.headers.get('Auth')
             #Check if user is authorized
-            if hdrs != ID_ROLES['admin']:
+            if hdrs != admin_id:
                 return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
             
             sale = self.get_object()
             sale.delete()
             return Response('Sale deleted succesfully', status=status.HTTP_200_OK)
         
-class SalesOfDayViewSet(viewsets.ModelViewSet):
-    pass
+class SaleReportViewSet(viewsets.ModelViewSet):
+    serializer_class = SaleSerializer
+        
+    def get_queryset(self):
+        sales = Sale.objects.order_by('-sale_at')
+        return sales
+     
+    #Get total of sales per day or month    
+    def create(self, request, *args, **kwargs):
+        hdrs = request.headers.get('Auth')
+        #Check if user is authorized
+        if (hdrs != admin_id):
+            return Response('User is not authorized', status.HTTP_401_UNAUTHORIZED)
+        report_data = request.data
+        today = datetime.today()
+        year = today.year
+        month = today.month
+        day = today.day
+        
+        if report_data['report'] == 'day':
+            sales = Sale.objects.filter(sale_at__year=year, sale_at__month=month, sale_at__day=day)
+        elif report_data['report'] == 'month':
+            sales = Sale.objects.filter(sale_at__year=year, sale_at__month=month) 
+        sum = 0    
+        for sale in sales:
+            sum = sum + (sale.products_id.price * sale.qty) 
+        return Response(sum)
+                
+        
+            
+        
