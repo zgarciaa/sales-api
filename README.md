@@ -11,29 +11,32 @@ This store API provides the following functionality:
 
 
   ## Create a virtual environment
+```bash
+  python -m venv env
+```
 
-  - python -m venv env
-
-  - env\Scripts\activate
-
+```bash
+  env\Scripts\activate
+```
 
   ## Install the requierements
-
-  - pip install -r requirements.txt
-
+```bash
+  pip install -r requirements.txt
+```
 
   ## Create database migration
-
-  - python manage.py makemigrations
-
+```bash
+  python manage.py makemigrations
+```
 
   ## Applying migrations
-
-  - python manage.py migrate
-
+```bash
+  python manage.py migrate
+```
 
   ## Run the project
+```bash
+  python manage.py runserver
+```
 
-  - python manage.py runserver
-
-  - Go to http://localhost:8000/
+Go to http://localhost:8000/
